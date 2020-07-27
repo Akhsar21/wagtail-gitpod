@@ -1,0 +1,9 @@
+.vscode
+*.pyc
+.DS_Store
+*.swp
+/env/
+/static/
+/media/
+.env
+*.log
