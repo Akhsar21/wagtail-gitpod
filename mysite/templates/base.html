@@ -29,7 +29,6 @@
 
 <body class="{% block body_class %}{% endblock %}">
     {% wagtailuserbar %}
-
     <!-- Following Menu -->
     <div class="ui large top fixed hidden menu">
         <div class="ui container">
@@ -38,12 +37,18 @@
             <a class="item">Company</a>
             <a class="item">Careers</a>
             <div class="right menu">
+                {% if request.user.is_authenticated %}
                 <div class="item">
-                    <a class="ui button">Log in</a>
+                    <a href="{% url 'account_logout' %}" class="ui button">Log out</a>
+                </div>
+                {% else %}
+                <div class="item">
+                    <a href="{% url 'account_login' %}" class="ui button">Log in</a>
                 </div>
                 <div class="item">
-                    <a class="ui primary button">Sign Up</a>
+                    <a href="{% url 'account_signup' %}" class="ui primary button">Sign Up</a>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -54,8 +59,12 @@
         <a class="item">Work</a>
         <a class="item">Company</a>
         <a class="item">Careers</a>
-        <a class="item">Login</a>
-        <a class="item">Signup</a>
+        {% if request.user.is_authenticated %}
+        <a href="{% url 'account_logout' %}" class="item">Logout</a>
+        {% else %}
+        <a href="{% url 'account_login' %}" class="item">Login</a>
+        <a href="{% url 'account_signup' %}" class="item">Signup</a>
+        {% endif %}
     </div>
 
 
@@ -73,8 +82,12 @@
                     <a class="item">Company</a>
                     <a class="item">Careers</a>
                     <div class="right item">
-                        <a class="ui inverted button">Log in</a>
-                        <a class="ui inverted button">Sign Up</a>
+                        {% if request.user.is_authenticated %}
+                        <a href="{% url 'account_logout' %}" class="ui inverted button">Log out</a>
+                        {% else %}
+                        <a href="{% url 'account_login' %}" class="ui inverted button">Log in</a>
+                        <a href="{% url 'account_signup' %}" class="ui inverted button">Sign up</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -118,7 +131,6 @@
 
         {% block extra_js %}
         {# Override this in templates to add extra javascript #}
-        {% endblock %}
 </body>
 
 </html>
