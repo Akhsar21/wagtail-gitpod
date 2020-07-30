@@ -19,9 +19,9 @@ COMPRESS_CSS_FILTERS = [
     'compressor.filters.cssmin.CSSMinFilter',
 ]
 
-#DTABASES = {
-#    'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
-#}
+DATABASES = {
+    'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
+}
 
 COMPRESS_CSS_HASHING_METHOD = 'content'
 
