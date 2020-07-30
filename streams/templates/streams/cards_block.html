@@ -1,0 +1,19 @@
+{% load wagtailimages_tags %}
+
+<h1>{{ self.title }}</h1>
+
+{% for card in self.cards %}
+{% image card.image fill-300x200 as img%}
+<img src="{{ img.url }}" alt="{{ img.alt }}">
+<h5 class="card-title">{{ card.title }}</h5>
+<p class="card-text">{{ card.text }}</p>
+{% if card.button_page %}
+<a href="{{ card.button_page.url }}" class="ui button primary">
+    Learn More
+</a>
+{% elif card.button_url %}
+<a href="{{ card.button_url }}" class="ui button primary">
+    Learn More
+</a>
+{% endif %}
+{% endfor %}
