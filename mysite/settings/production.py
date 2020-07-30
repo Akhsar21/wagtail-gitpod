@@ -9,9 +9,9 @@ SECRET_KEY = env['SECRET_KEY']
 DEBUG = False
 
 # Allow all host headers
-ALLOWED_HOSTS = ['aksar-as.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['akhsara.herokuapp.com', '127.0.0.1']
 
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 COMPRESS_OFFLINE = True
 COMPRESS_CSS_FILTERS = [
