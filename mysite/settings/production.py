@@ -3,8 +3,8 @@ from .base import *
 import dj_database_url
 import os
 
-# env = os.environ.copy()
-SECRET_KEY = os.getenv['SECRET_KEY']
+env = os.environ.copy()
+SECRET_KEY = env['SECRET_KEY']
 
 DEBUG = False
 
