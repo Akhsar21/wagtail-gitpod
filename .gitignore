@@ -7,3 +7,5 @@
 /media/
 .env
 *.log
+*.sqlite3
+
