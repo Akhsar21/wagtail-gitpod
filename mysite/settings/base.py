@@ -64,7 +64,13 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+
+    'crispy_forms',
+    'crispy_forms_semantic_ui',
 ]
+
+CRISPY_TEMPLATE_PACK = 'semantic-ui'
+CRISPY_ALLOWED_TEMPLATE_PACKS = ('semantic-ui',)
 
 MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',

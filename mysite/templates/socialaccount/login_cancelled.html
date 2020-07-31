@@ -5,11 +5,20 @@
 {% block head_title %}{% trans "Login Cancelled" %}{% endblock %}
 
 {% block content %}
+</div>
 
-<h1>{% trans "Login Cancelled" %}</h1>
+<div class="ui middle aligned center aligned grid">
+    <div class="column">
+        <h2 class="ui teal image header">
+            <div class="content">
 
-{% url 'account_login' as login_url %}
+                {% url 'account_login' as login_url %}
 
-<p>{% blocktrans %}You decided to cancel logging in to our site using one of your existing accounts. If this was a mistake, please proceed to <a href="{{login_url}}">sign in</a>.{% endblocktrans %}</p>
+                <p>{% blocktrans %}You decided to cancel logging in to our site using one of your existing accounts. If
+                    this was a mistake, please proceed to <a href="{{login_url}}">sign in</a>.{% endblocktrans %}</p>
 
+            </div>
+        </h2>
+    </div>
+</div>
 {% endblock %}

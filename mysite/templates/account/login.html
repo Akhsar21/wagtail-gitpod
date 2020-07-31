@@ -2,28 +2,9 @@
 
 {% load i18n %}
 {% load account socialaccount %}
+{% load crispy_forms_tags %}
 
 {% block head_title %}{% trans "Sign In" %}{% endblock %}
-
-{% block extra_css %}
-<style>
-  .masthead.segment {
-    display: none;
-  }
-
-  .image {
-    margin-top: 100px !important;
-  }
-
-  .column {
-    max-width: 450px;
-  }
-
-  .footer.segment {
-    display: none;
-  }
-</style>
-{% endblock %}
 
 {% block content %}
 </div>
@@ -43,29 +24,19 @@
     <form class="ui large form" method="POST" action="{% url 'account_login' %}">
       <div class="ui stacked segment">
         {% csrf_token %}
-        {% comment %} {{ form }} {% endcomment %}
-        <div class="field {% for err in form.login.errors %}error{% endfor %}">
+        {{ form|crispy }}
+        {% comment %} <div class="field {% for err in form.login.errors %}error{% endfor %}">
           <div class="ui left icon input">
             <i class="user icon"></i>
-            {% comment %} {{form.login}} {% endcomment %}
-            <input type="text" name="login" id="id_login" placeholder="Username or E-mail Address"
-              {% if form.is_bound %}value="{{ form.login.value }}" {% endif %}>
+            {{ form.login|as_crispy_field  }}
           </div>
-          {% for err in form.login.errors %}
-          <span class="ui red">{{ err }}</span>
-          {% endfor %}
-        </div>
-        <div class="ui error message">
-          <div class="header">Action Forbidden</div>
-          <p>You can only sign up for an account once with a given e-mail address.</p>
         </div>
         <div class="field {% for err in form.password.errors %}error{% endfor %}">
           <div class="ui left icon input">
             <i class="lock icon"></i>
             <input type="password" name="password" id="id_password" placeholder="Password">
           </div>
-        </div>
-        <div class="ui error message"></div>
+        </div> {% endcomment %}
         {% if redirect_field_value %}
         <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
         {% endif %}
@@ -74,11 +45,10 @@
         </div>
         <button class="ui fluid large teal submit button" type="submit">{% trans "Sign In" %}</button>
       </div>
-
-      <div class="ui error message"></div>
-
     </form>
 
+
+    {% if socialaccount_providers %}
     <div class="ui message">
 
       <div class="socialaccount_ballot">
@@ -91,6 +61,8 @@
 
       </div>
     </div>
+    {% else %}
+    {% endif %}
   </div>
 </div>
 
