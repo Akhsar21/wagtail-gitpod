@@ -8,6 +8,8 @@ SECRET_KEY = env['SECRET_KEY']
 
 DEBUG = False
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 # Allow all host headers
 ALLOWED_HOSTS = ['akhsara.herokuapp.com', '127.0.0.1']
 
