@@ -14,6 +14,8 @@ $(function () {
   $(".ui.sidebar").sidebar("attach events", ".toc.item");
 
   $("input").prop("required", false);
+
+  $(".ui.radio.checkbox").checkbox();
 });
 
 //   (document).ready

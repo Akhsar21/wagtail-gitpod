@@ -5,6 +5,13 @@
 {% block body_class %}template-blogpage{% endblock %}
 
 {% block content %}
+<div class="ui text container">
+    <h1 class="ui inverted header">
+        Imagine-a-Company
+    </h1>
+    <h2>Do whatever you want when you want to.</h2>
+    <div class="ui huge primary button">Get Started <i class="right arrow icon"></i></div>
+</div>
 </div>
 {% image self.banner_image fill-1200x300 as banner%}
 <img src="{{ banner.url }}" alt="{{ banner.alt }}">

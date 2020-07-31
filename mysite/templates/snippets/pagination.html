@@ -1,0 +1,30 @@
+{% if posts.paginator.num_pages > 1 %}
+<div aria-label="Pagination Navigation" role="navigation" class="ui pagination menu">
+    {% if posts.has_previous %}
+    <a href="?page={{ posts.previous_page_number }}" aria-label="Previous item" type="prevItem" class="item">⟨</a>
+    {% else %}
+    <a aria-label="Previous item" type="prevItem" class="disabled item">⟨</a>
+    {% endif %}
+
+    {% for page_num in posts.paginator.page_range %}
+    {% if posts.number == page_num %}
+    <span type="pageItem" class="active item">
+        {{ page_num }}
+    </span>
+    {% elif page_num > posts.number|add:'-3' and page_num < posts.number|add:'3' %}
+    <a href="?page={{ page_num }}" type="pageItem" class="item">
+        {{ page_num }}
+    </a>
+    {% comment %} <a href="?page={{ page_num }}" type="pageItem"
+        class="{% if page_num == posts.number %}active {% endif %}item">
+        {{ page_num }}
+    </a> {% endcomment %}
+    {% endif %}
+    {% endfor %}
+    {% if posts.has_next %}
+    <a href="?page={{ posts.next_page_number }}" aria-label=" Next item" type="nextItem" class="item">⟩</a>
+    {% else %}
+    <a aria-label=" Next item" type="nextItem" class="disabled item">⟩</a>
+    {% endif %}
+</div>
+{% endif %}
