@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+    <h1>{{ page.title }}</h1>
+</div>
+<div class="ui container">
+    <p>
+        {{ self.thank_you_text|richtext }}
+    </p>
+</div>
+{% endblock %}

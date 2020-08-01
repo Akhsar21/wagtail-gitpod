@@ -15,6 +15,8 @@ $(function () {
 
   $("input").prop("required", false);
 
+  $("textarea").prop("required", false);
+
   $(".ui.radio.checkbox").checkbox();
 });
 

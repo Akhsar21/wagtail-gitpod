@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% load wagtailcore_tags %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <h1 class="">{{ page.title }}</h1>
+    <p>{{ self.intro|richtext }}</p>
+</div>
+<div class="ui container">
+
+    <form class="ui form" action="{% pageurl page %}" method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button class="ui button primary" type="submit">
+            Submit Form
+        </button>
+    </form>
+</div>
+{% endblock %}
