@@ -27,7 +27,7 @@ from wagtail.snippets.models import register_snippet
 from streams import blocks
 
 
-class ImageSerializedField(Field): # noqa
+class ImageSerializedField(Field):  # noqa
     """A custom serializer used in Wagtails v2 API."""
 
     def to_representation(self, value):
@@ -43,8 +43,8 @@ class ImageSerializedField(Field): # noqa
 class BlogAuthorsOrderable(Orderable):
     """us to select one or more blog authors from Snippet"""
 
-    page = ParentalKey("blog.BlogDetailPage", related_name="blog_authors")
-    author = models.ForeignKey("blog.BlogAuthor", on_delete=models.CASCADE)
+    page = ParentalKey("BlogDetailPage", related_name="blog_authors")
+    author = models.ForeignKey("BlogAuthor", on_delete=models.CASCADE)
 
     panels = [
         SnippetChooserPanel("author")
@@ -69,8 +69,7 @@ class BlogAuthorsOrderable(Orderable):
         APIField("author_image", serializer=ImageSerializedField()),
         # The below APIField is using a Wagtail-built DRF Serializer that supports
         # custom image rendition sizes
-        APIField(
-            "image",
+        APIField("image",
             serializer=ImageRenditionField(
                 'fill-200x250',
                 source="author_image"
@@ -128,7 +127,7 @@ class BlogCategory(models.Model):
         ordering = ["name"]
 
 
-class BlogChildPagesSerializer(Field): # noqa
+class BlogChildPagesSerializer(Field):  # noqa
     def to_representation(self, child_pages):
         # logic in here
         return_posts = []
@@ -157,7 +156,7 @@ class BlogListingPage(RoutablePageMixin, Page):
 
     ajax_template = "blog/blog_listing_page_ajax.html"
     max_count = 1
-    subpage_types = ["blog.VideoBlogPage", "blog.ArticleBlogPage"]
+    subpage_types = ["VideoBlogPage", "blog.ArticleBlogPage"]
 
     custom_title = models.CharField(max_length=100, blank=False,
                                     null=False, help_text="Overwrites the default title")
@@ -279,24 +278,22 @@ class BlogDetailPage(Page):
     """Parental blog detail page."""
 
     subpage_types = []
-    parent_page_types = ['blog.BlogListingPage']
+    parent_page_types = ['BlogListingPage']
 
     tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
     custom_title = models.CharField(max_length=100, blank=False,
                                     null=False, help_text="Overwrites the default title")
     banner_image = models.ForeignKey("wagtailimages.Image", blank=False, null=True,
                                      on_delete=models.SET_NULL, related_name="+")
-    categories = ParentalManyToManyField("blog.BlogCategory", blank=True)
+    categories = ParentalManyToManyField("BlogCategory", blank=True)
 
-    content = StreamField(
-        [
-            ("title_and_text", blocks.TitleAndTextBlock()),
-            ("full_richtext", blocks.RichtextBlock()),
-            ("simple_richtext", blocks.SimpleRichtextBlock()),
-            ("cards", blocks.CardBlock()),
-            ("cta", blocks.CTABlock()),
-        ], blank=True, null=True,
-    )
+    content = StreamField([
+        ("title_and_text", blocks.TitleAndTextBlock()),
+        ("full_richtext", blocks.RichtextBlock()),
+        ("simple_richtext", blocks.SimpleRichtextBlock()),
+        ("cards", blocks.CardBlock()),
+        ("cta", blocks.CTABlock()),
+    ], blank=True, null=True,)
 
     content_panels = Page.content_panels + [
         FieldPanel("custom_title"),
