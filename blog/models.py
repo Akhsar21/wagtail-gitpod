@@ -70,11 +70,11 @@ class BlogAuthorsOrderable(Orderable):
         # The below APIField is using a Wagtail-built DRF Serializer that supports
         # custom image rendition sizes
         APIField("image",
-            serializer=ImageRenditionField(
-                'fill-200x250',
-                source="author_image"
-            )
-        ),
+                 serializer=ImageRenditionField(
+                     'fill-200x250',
+                     source="author_image"
+                 )
+                 ),
     ]
 
 
@@ -166,8 +166,11 @@ class BlogListingPage(RoutablePageMixin, Page):
     ]
 
     api_fields = [
-        APIField("posts", serializer=BlogChildPagesSerializer(
-            source='get_child_pages')),
+        APIField(
+            "posts",
+            serializer=BlogChildPagesSerializer(
+                source='get_child_pages')
+        ),
     ]
 
     @property
