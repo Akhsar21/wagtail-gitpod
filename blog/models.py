@@ -8,7 +8,7 @@ from django.shortcuts import render
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from rest_framework.fields import Field
-from taggit.models import TaggedItemBase
+from taggit.models import TaggedItemBase, Tag as TaggitTag
 from wagtail.api import APIField
 from wagtail.admin.edit_handlers import (
     FieldPanel,
@@ -27,7 +27,7 @@ from wagtail.snippets.models import register_snippet
 from streams import blocks
 
 
-class ImageSerializedField(Field):
+class ImageSerializedField(Field): # noqa
     """A custom serializer used in Wagtails v2 API."""
 
     def to_representation(self, value):
@@ -102,8 +102,8 @@ class BlogAuthor(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = "Blog Author"
-        verbose_name_plural = "Blog Authors"
+        verbose_name = "Author"
+        verbose_name_plural = "Authors"
 
 
 @register_snippet
@@ -123,12 +123,12 @@ class BlogCategory(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = "Blog Category"
-        verbose_name_plural = "Blog Categories"
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
         ordering = ["name"]
 
 
-class BlogChildPagesSerializer(Field):
+class BlogChildPagesSerializer(Field): # noqa
     def to_representation(self, child_pages):
         # logic in here
         return_posts = []
@@ -267,6 +267,12 @@ class BlogListingPage(RoutablePageMixin, Page):
 class BlogPageTag(TaggedItemBase):
     content_object = ParentalKey('BlogDetailPage', related_name='tagged_items',
                                  on_delete=models.CASCADE,)
+
+
+@register_snippet
+class Tag(TaggitTag):
+    class Meta:
+        proxy = True
 
 
 class BlogDetailPage(Page):
