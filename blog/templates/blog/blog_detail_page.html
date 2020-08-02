@@ -2,38 +2,41 @@
 
 {% load wagtailcore_tags wagtailimages_tags %}
 
-{% block body_class %}template-blogpage{% endblock %}
-
 {% block content %}
+<div class="ui text container" style="padding-top:100px;">
+    <h1>{{ self.title }}</h1>
+    <small>{{ self.custom_title }}</small>
 </div>
-{% image self.banner_image fill-1200x300 as banner%}
-<img src="{{ banner.url }}" alt="{{ banner.alt }}">
-<br>
-{{ self.custom_title }}
-<ul>
-    {% for item in self.blog_authors.all %}
-    {% image item.author.image fill-100x100 as img %}
-    <li>{{ item.author }}</li>
-    <img src="{{ img.url }}" alt="{{ item.author }}">
-    {% if item.author.website %}
-    <a href="{{ item.author.website }}">(website)</a>
-    {% endif %}
+</div>
+<div class="ui container">
+    {% image self.banner_image fill-1200x300 as banner%}
+    <img src="{{ banner.url }}" alt="{{ banner.alt }}">
+    <br>
+    <ul>
+        {% for item in self.blog_authors.all %}
+        {% image item.author.image fill-100x100 as img %}
+        <li>{{ item.author }}</li>
+        <img src="{{ img.url }}" alt="{{ item.author }}">
+        {% if item.author.website %}
+        <a href="{{ item.author.website }}">(website)</a>
+        {% endif %}
+        {% endfor %}
+    </ul>
+
+    <h2>Categories</h2>
+    <ul>
+        {% for cat in self.categories.all %}
+        <li>
+            <a href="{{ self.get_parent.url }}/?category={{ cat.slug }}">
+                {{ cat }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+
+    {% for block in self.content %}
+    {% include_block block %}
     {% endfor %}
-</ul>
 
-<h2>Categories</h2>
-<ul>
-    {% for cat in self.categories.all %}
-    <li>
-        <a href="{{ self.get_parent.url }}/?category={{ cat.slug }}">
-            {{ cat }}
-        </a>
-    </li>
-    {% endfor %}
-</ul>
-
-{% for block in self.content %}
-{% include_block block %}
-{% endfor %}
-
+</div>
 {% endblock %}

@@ -2,8 +2,11 @@
 {% load wagtailcore_tags %}
 
 {% block content %}
+<div class="ui text container" style="padding-top:100px;">
     <h1>{{ page.title }}</h1>
 </div>
+</div>
+
 <div class="ui container">
     <p>
         {{ self.thank_you_text|richtext }}

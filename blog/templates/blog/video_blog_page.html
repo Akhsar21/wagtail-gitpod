@@ -2,49 +2,52 @@
 
 {% load wagtailcore_tags wagtailimages_tags %}
 
-{% block body_class %}template-blogpage{% endblock %}
-
 {% block content %}
+<div class="ui text container" style="padding-top:100px;">
+    <h1>{{ self.title }}</h1>
+    <small>
+        {% if self.custom_title %}
+        {{ self.custom_title }}
+        {% else %}
+        {{ self.title }}
+        {% endif %}
+    </small>
 </div>
-{% image self.banner_image fill-1200x300 as banner%}
-<img src="{{ banner.url }}" alt="{{ banner.alt }}">
-<br>
-<h1>
-    {% if self.custom_title %}
-    {{ self.custom_title }}
-    {% else %}
-    {{ self.title }}
-    {% endif %}
-</h1>
-{% if self.subtitle %}
-{{ self.subtitle }}
-{% endif %}
-<ul>
-    {% for item in self.blog_authors.all %}
-    {% image item.author.image fill-100x100 as img %}
-    <li>{{ item.author }}</li>
-    <img src="{{ img.url }}" alt="{{ item.author }}">
-    {% if item.author.website %}
-    <a href="{{ item.author.website }}">(website)</a>
-    {% endif %}
-    {% endfor %}
-</ul>
+</div>
 
-<h2>Categories</h2>
-<ul>
-    {% for cat in self.categories.all %}
-    <li>
-        <a href="{{ self.get_parent.url }}/?category={{ cat.slug }}">
-            {{ cat }}
-        </a>
-    </li>
-    {% endfor %}
-</ul>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/{{ self.youtube_video_id }}" frameborder="0"
-    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<div class="ui container">
+    {% image self.banner_image fill-1200x300 as banner%}
+    <img src="{{ banner.url }}" alt="{{ banner.alt }}">
+    {% if self.subtitle %}
+    {{ self.subtitle }}
+    {% endif %}
+    <ul>
+        {% for item in self.blog_authors.all %}
+        {% image item.author.image fill-100x100 as img %}
+        <li>{{ item.author }}</li>
+        <img src="{{ img.url }}" alt="{{ item.author }}">
+        {% if item.author.website %}
+        <a href="{{ item.author.website }}">(website)</a>
+        {% endif %}
+        {% endfor %}
+    </ul>
 
-{% for block in self.content %}
-{% include_block block %}
-{% endfor %}
+    <h2>Categories</h2>
+    <ul>
+        {% for cat in self.categories.all %}
+        <li>
+            <a href="{{ self.get_parent.url }}/?category={{ cat.slug }}">
+                {{ cat }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ self.youtube_video_id }}" frameborder="0"
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+    {% for block in self.content %}
+    {% include_block block %}
+    {% endfor %}
+</div>
 
 {% endblock %}
