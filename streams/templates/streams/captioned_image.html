@@ -1,0 +1,13 @@
+{% load wagtailimages_tags %}
+
+{% spaceless %}
+    <figure>
+        {% image self.image original %}
+        {% if self.caption|length %}
+            <figcaption>{{ self.caption }}</figcaption>
+        {% endif %}
+        {% if self.credit|length %}
+            <figcaption>Credit: {{ self.credit }}</figcaption>
+        {% endif %}
+    </figure>
+{% endspaceless %}

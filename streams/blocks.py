@@ -58,12 +58,12 @@ class SimpleRichtextBlock(blocks.RichTextBlock):
 
     def __init__(self, required=True, help_text=None, editor="default", features=None, validators=(), **kwargs):
         super().__init__(**kwargs)
-        self.features = ["bold", "italic", "link", ]
+        self.features = ['bold', 'italic', 'link', 'ol', 'ul', 'monospace']
 
     class Meta:
         template = "streams/richtext_block.html"
-        icon = "edit"
-        label = "Simple Richtext"
+        icon = "pilcrow"
+        label = "Paragraph"
 
 
 class CTABlock(blocks.StructBlock):
@@ -117,3 +117,42 @@ class ButtonBlock(blocks.StructBlock):
         icon = "placeholder"
         label = "Single Button"
         value_class = LinkStruckValue
+
+
+class CaptionedImageBlock(blocks.StructBlock):
+    """An image block with a caption, credit, and alignment."""
+    
+    image = ImageChooserBlock(help_text='The image to display.',)
+    caption = blocks.TextBlock(required=False,
+                        help_text='The caption will appear under the image, if entered.')
+    credit = blocks.TextBlock(required=False,
+                       help_text='The credit will appear under the image, if entered.')
+    align = blocks.ChoiceBlock(
+        choices=[
+            ('left', 'Left'),
+            ('right', 'Right'),
+            ('center', 'Center'),
+            ('full', 'Full Width'),
+        ],
+        default='left',
+        help_text='How to align the image in the body of the page.'
+    )
+
+    class Meta:
+        icon = 'image'
+        template = 'streams/captioned_image.html'
+        help_text = 'Select an image and add a caption (optional).'
+
+# heading = TextBlock(
+#         icon='title',
+#         template='wagtailcontentstream/blocks/heading.html',
+#     )
+#     paragraph = RichTextBlock(
+#         icon='pilcrow',
+#         features=['bold', 'italic', 'link', 'ol', 'ul', 'monospace'],
+#     )
+#     image = CaptionedImageBlock()
+#     document = DocumentChooserBlock()
+#     embed = EmbedBlock(icon='media')
+#     table = TableBlock(icon='table')
+#     code = CodeBlock(icon='code')

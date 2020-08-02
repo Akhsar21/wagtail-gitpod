@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'wagtail.contrib.routable_page',
     'wagtail.contrib.sitemaps',
     'wagtail.contrib.settings',
+    "wagtail.contrib.table_block",
     'wagtail.embeds',
     'wagtail.sites',
     'wagtail.users',
@@ -75,6 +76,8 @@ INSTALLED_APPS = [
 
     'crispy_forms',
     'crispy_forms_semantic_ui',
+
+    'wagtailcodeblock',
 ]
 
 CRISPY_TEMPLATE_PACK = 'semantic-ui'

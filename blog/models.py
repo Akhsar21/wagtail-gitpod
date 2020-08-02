@@ -1,3 +1,4 @@
+from wagtail.core import blocks as streamfield_blocks
 from django import forms
 from django.core.cache import cache
 from django.core.cache.utils import make_template_fragment_key
@@ -14,15 +15,23 @@ from wagtail.admin.edit_handlers import (
     FieldPanel,
     InlinePanel,
     MultiFieldPanel,
-    StreamFieldPanel
+    StreamFieldPanel,
+    ObjectList,
+    TabbedInterface,
 )
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
+from wagtail.contrib.table_block.blocks import TableBlock
 from wagtail.core.fields import StreamField
 from wagtail.core.models import Page, Orderable
 from wagtail.images.api.fields import ImageRenditionField
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
 from wagtail.snippets.models import register_snippet
+from wagtail.documents.blocks import DocumentChooserBlock
+from wagtail.embeds.blocks import EmbedBlock
+from wagtail.images.blocks import ImageChooserBlock
+
+from wagtailcodeblock.blocks import CodeBlock
 
 from streams import blocks
 
@@ -291,28 +300,51 @@ class BlogDetailPage(Page):
     categories = ParentalManyToManyField("BlogCategory", blank=True)
 
     content = StreamField([
+        ("heading", streamfield_blocks.TextBlock(
+            icon='title',
+            min_length=10,
+            max_length=100,
+            template='wagtailcontentstream/blocks/heading.html'
+        )),
+        ("document", DocumentChooserBlock()),
+        ("embed", EmbedBlock(icon='media')),
+        ("table", TableBlock(icon='table')),
+        ("code", CodeBlock(icon='code')),
         ("title_and_text", blocks.TitleAndTextBlock()),
+        ("image", blocks.CaptionedImageBlock()),
         ("full_richtext", blocks.RichtextBlock()),
-        ("simple_richtext", blocks.SimpleRichtextBlock()),
+        ("paragraph", blocks.SimpleRichtextBlock()),
         ("cards", blocks.CardBlock()),
         ("cta", blocks.CTABlock()),
     ], blank=True, null=True,)
 
     content_panels = Page.content_panels + [
         FieldPanel("custom_title"),
+        StreamFieldPanel("content"),
+    ]
+
+    banner_panels = [
         FieldPanel("tags"),
         ImageChooserPanel("banner_image"),
         InlinePanel("blog_authors", label="Author", max_num=1),
         MultiFieldPanel([
             FieldPanel("categories", widget=forms.CheckboxSelectMultiple),
         ], heading="Categories"),
-        StreamFieldPanel("content"),
     ]
 
     api_fields = [
         APIField("blog_authors"),
         APIField("content"),
     ]
+
+    edit_handler = TabbedInterface(
+        [
+            ObjectList(content_panels, heading="Content"),
+            ObjectList(banner_panels, heading="Banner"),
+            ObjectList(Page.promote_panels, heading="Promote"),
+            ObjectList(Page.settings_panels, heading="Settings"),
+        ]
+    )
 
     def save(self, *args, **kwargs):
         """Create a template fragment key.
@@ -336,15 +368,32 @@ class ArticleBlogPage(BlogDetailPage):
     content_panels = Page.content_panels + [
         FieldPanel("custom_title"),
         FieldPanel("subtitle"),
+        StreamFieldPanel("content"),
+    ]
+
+    banner_panels = [
         FieldPanel("tags"),
-        ImageChooserPanel('banner_image'),
+        ImageChooserPanel("banner_image"),
         ImageChooserPanel('intro_image'),
         InlinePanel("blog_authors", label="Author", max_num=1),
         MultiFieldPanel([
             FieldPanel("categories", widget=forms.CheckboxSelectMultiple),
         ], heading="Categories"),
-        StreamFieldPanel("content"),
     ]
+
+    api_fields = [
+        APIField("blog_authors"),
+        APIField("content"),
+    ]
+
+    edit_handler = TabbedInterface(
+        [
+            ObjectList(content_panels, heading="Content"),
+            ObjectList(banner_panels, heading="Banner"),
+            ObjectList(Page.promote_panels, heading="Promote"),
+            ObjectList(Page.settings_panels, heading="Settings"),
+        ]
+    )
 
 # Second subclassed blog post page
 
@@ -356,12 +405,29 @@ class VideoBlogPage(BlogDetailPage):
 
     content_panels = Page.content_panels + [
         FieldPanel("custom_title"),
+        FieldPanel("youtube_video_id"),
+        StreamFieldPanel("content"),
+    ]
+
+    banner_panels = [
         FieldPanel("tags"),
         ImageChooserPanel("banner_image"),
         InlinePanel("blog_authors", label="Author", max_num=1),
         MultiFieldPanel([
             FieldPanel("categories", widget=forms.CheckboxSelectMultiple),
         ], heading="Categories"),
-        FieldPanel("youtube_video_id"),
-        StreamFieldPanel("content"),
     ]
+
+    api_fields = [
+        APIField("blog_authors"),
+        APIField("content"),
+    ]
+
+    edit_handler = TabbedInterface(
+        [
+            ObjectList(content_panels, heading="Content"),
+            ObjectList(banner_panels, heading="Banner"),
+            ObjectList(Page.promote_panels, heading="Promote"),
+            ObjectList(Page.settings_panels, heading="Settings"),
+        ]
+    )
