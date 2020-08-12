@@ -33,7 +33,8 @@ class FlexPage(Page):
                 min_length=10,
                 max_length=50,
                 template="streams/char_block.html",
-            ))
+            )),
+            ("header", blocks.MapBlock())
         ], blank=True, null=True
     )
 

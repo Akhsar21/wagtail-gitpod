@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'core',
     'flex',
     'home',
+    'menus',
     'search',
     'site_settings',
     'streams',
@@ -106,9 +107,7 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            os.path.join(PROJECT_DIR, 'templates'),
-        ],
+        'DIRS': [os.path.join(PROJECT_DIR, 'templates'), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -176,9 +175,7 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
-STATICFILES_DIRS = [
-    os.path.join(PROJECT_DIR, 'static'),
-]
+STATICFILES_DIRS = [os.path.join(PROJECT_DIR, 'static'), ]
 
 # ManifestStaticFilesStorage is recommended in production, to prevent outdated
 # Javascript / CSS assets being served from cache (e.g. after a Wagtail upgrade).
@@ -193,7 +190,6 @@ MEDIA_URL = '/media/'
 
 
 # Wagtail settings
-
 WAGTAIL_SITE_NAME = "mysite"
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
@@ -214,6 +210,6 @@ ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
 ACCOUNT_LOGOUT_REDIRECT_URL = '/login/'
 ACCOUNT_PRESERVE_USERNAME_CASING = False
 ACCOUNT_SESSION_REMEMBER = True
-ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
+# ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 ACCOUNT_USERNAME_BLACKLIST = ["aksar", "admin", "god"]
 ACCOUNT_USERNAME_MIN_LENGTH = 2

@@ -1,9 +1,9 @@
 {% load menus_tags cache %}
 
 {% get_menu "main" as navigation %}
-{% cache 604800 navigation %}
+{% comment %} {% cache 604800 navigation %} {% endcomment %}
 {% for item in navigation.menu_items.all %}
 <a class="{% if request.path == item.link %}active {% endif %}item" href="{{ item.link }}"
     {% if item.open_in_new_tab %}target="_blank" {% endif %}>{{ item.title }}</a>
 {% endfor %}
-{% endcache %}
+{% comment %} {% endcache %} {% endcomment %}

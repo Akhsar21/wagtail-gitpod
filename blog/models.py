@@ -78,12 +78,10 @@ class BlogAuthorsOrderable(Orderable):
         APIField("author_image", serializer=ImageSerializedField()),
         # The below APIField is using a Wagtail-built DRF Serializer that supports
         # custom image rendition sizes
-        APIField("image",
-                 serializer=ImageRenditionField(
-                     'fill-200x250',
-                     source="author_image"
-                 )
-                 ),
+        APIField("image", serializer=ImageRenditionField(
+            'fill-200x250',
+            source="author_image"
+        )),
     ]
 
 
@@ -119,8 +117,8 @@ class BlogCategory(models.Model):
     """Blog category for snippets."""
 
     name = models.CharField(max_length=255)
-    slug = models.SlugField(verbose_name="slug", allow_unicode=True,
-                            max_length=255, help_text="A slug to identify posts by this category")
+    slug = models.SlugField(verbose_name="slug", allow_unicode=True, max_length=255,
+                            help_text="A slug to identify posts by this category")
 
     panels = [
         FieldPanel("name"),
@@ -167,19 +165,17 @@ class BlogListingPage(RoutablePageMixin, Page):
     max_count = 1
     subpage_types = ["VideoBlogPage", "blog.ArticleBlogPage"]
 
-    custom_title = models.CharField(max_length=100, blank=False,
-                                    null=False, help_text="Overwrites the default title")
+    custom_title = models.CharField(max_length=100, blank=False, null=False,
+                                    help_text="Overwrites the default title")
 
     content_panels = Page.content_panels + [
         FieldPanel('custom_title')
     ]
 
     api_fields = [
-        APIField(
-            "posts",
-            serializer=BlogChildPagesSerializer(
-                source='get_child_pages')
-        ),
+        APIField("posts", serializer=BlogChildPagesSerializer(
+            source='get_child_pages'
+        )),
     ]
 
     @property
@@ -199,6 +195,7 @@ class BlogListingPage(RoutablePageMixin, Page):
         paginator = Paginator(all_posts, 6)
 
         page = request.GET.get("page")
+
         try:
             posts = paginator.page(page)
         except PageNotAnInteger:
@@ -265,13 +262,11 @@ class BlogListingPage(RoutablePageMixin, Page):
         # Uncomment to have no sitemap for this page
         # return []
         sitemap = super().get_sitemap_urls(request)
-        sitemap.append(
-            {
-                "location": self.full_url + self.reverse_subpage("latest_posts"),
-                "lastmod": (self.last_published_at or self.latest_revision_created_at),
-                "priority": 0.9,
-            }
-        )
+        sitemap.append({
+            "location": self.full_url + self.reverse_subpage("latest_posts"),
+            "lastmod": (self.last_published_at or self.latest_revision_created_at),
+            "priority": 0.9,
+        })
         return sitemap
 
 
@@ -293,8 +288,8 @@ class BlogDetailPage(Page):
     parent_page_types = ['BlogListingPage']
 
     tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
-    custom_title = models.CharField(max_length=100, blank=False,
-                                    null=False, help_text="Overwrites the default title")
+    custom_title = models.CharField(max_length=100, blank=False, null=False,
+                                    help_text="Overwrites the default title")
     banner_image = models.ForeignKey("wagtailimages.Image", blank=False, null=True,
                                      on_delete=models.SET_NULL, related_name="+")
     categories = ParentalManyToManyField("BlogCategory", blank=True)
@@ -337,14 +332,12 @@ class BlogDetailPage(Page):
         APIField("content"),
     ]
 
-    edit_handler = TabbedInterface(
-        [
-            ObjectList(content_panels, heading="Content"),
-            ObjectList(banner_panels, heading="Banner"),
-            ObjectList(Page.promote_panels, heading="Promote"),
-            ObjectList(Page.settings_panels, heading="Settings"),
-        ]
-    )
+    edit_handler = TabbedInterface([
+        ObjectList(content_panels, heading="Content"),
+        ObjectList(banner_panels, heading="Banner"),
+        ObjectList(Page.promote_panels, heading="Promote"),
+        ObjectList(Page.settings_panels, heading="Settings"),
+    ])
 
     def save(self, *args, **kwargs):
         """Create a template fragment key.
@@ -386,14 +379,12 @@ class ArticleBlogPage(BlogDetailPage):
         APIField("content"),
     ]
 
-    edit_handler = TabbedInterface(
-        [
-            ObjectList(content_panels, heading="Content"),
-            ObjectList(banner_panels, heading="Banner"),
-            ObjectList(Page.promote_panels, heading="Promote"),
-            ObjectList(Page.settings_panels, heading="Settings"),
-        ]
-    )
+    edit_handler = TabbedInterface([
+        ObjectList(content_panels, heading="Content"),
+        ObjectList(banner_panels, heading="Banner"),
+        ObjectList(Page.promote_panels, heading="Promote"),
+        ObjectList(Page.settings_panels, heading="Settings"),
+    ])
 
 # Second subclassed blog post page
 
@@ -423,11 +414,9 @@ class VideoBlogPage(BlogDetailPage):
         APIField("content"),
     ]
 
-    edit_handler = TabbedInterface(
-        [
-            ObjectList(content_panels, heading="Content"),
-            ObjectList(banner_panels, heading="Banner"),
-            ObjectList(Page.promote_panels, heading="Promote"),
-            ObjectList(Page.settings_panels, heading="Settings"),
-        ]
-    )
+    edit_handler = TabbedInterface([
+        ObjectList(content_panels, heading="Content"),
+        ObjectList(banner_panels, heading="Banner"),
+        ObjectList(Page.promote_panels, heading="Promote"),
+        ObjectList(Page.settings_panels, heading="Settings"),
+    ])

@@ -1,5 +1,5 @@
 """Streamfields live in here"""
-
+from django import forms
 from wagtail.core import blocks
 from wagtail.core.templatetags.wagtailcore_tags import richtext
 from wagtail.images.blocks import ImageChooserBlock
@@ -23,16 +23,14 @@ class CardBlock(blocks.StructBlock):
     title = blocks.CharBlock(required=True, help_text='Add your title')
 
     cards = blocks.ListBlock(
-        blocks.StructBlock(
-            [
-                ("image", ImageChooserBlock(required=True)),
-                ("title", blocks.CharBlock(required=True, max_length=40)),
-                ("text", blocks.TextBlock(required=True, max_length=200)),
-                ("button_page", blocks.PageChooserBlock(required=False)),
-                ("button_url", blocks.URLBlock(required=False,
-                                               help_text="If the button page above is selected, that will be used first.")),
-            ]
-        )
+        blocks.StructBlock([
+            ("image", ImageChooserBlock(required=True)),
+            ("title", blocks.CharBlock(required=True, max_length=40)),
+            ("text", blocks.TextBlock(required=True, max_length=200)),
+            ("button_page", blocks.PageChooserBlock(required=False)),
+            ("button_url", blocks.URLBlock(required=False,
+                                           help_text="If the button page above is selected, that will be used first.")),
+        ])
     )
 
     class Meta:
@@ -121,12 +119,12 @@ class ButtonBlock(blocks.StructBlock):
 
 class CaptionedImageBlock(blocks.StructBlock):
     """An image block with a caption, credit, and alignment."""
-    
+
     image = ImageChooserBlock(help_text='The image to display.',)
     caption = blocks.TextBlock(required=False,
-                        help_text='The caption will appear under the image, if entered.')
+                               help_text='The caption will appear under the image, if entered.')
     credit = blocks.TextBlock(required=False,
-                       help_text='The credit will appear under the image, if entered.')
+                              help_text='The credit will appear under the image, if entered.')
     align = blocks.ChoiceBlock(
         choices=[
             ('left', 'Left'),
@@ -156,3 +154,49 @@ class CaptionedImageBlock(blocks.StructBlock):
 #     embed = EmbedBlock(icon='media')
 #     table = TableBlock(icon='table')
 #     code = CodeBlock(icon='code')
+
+from django.templatetags.static import static
+# from django.utils.html import format_html
+
+
+
+# @hooks.register("insert_global_admin_css", order=100)
+# def global_admin_css():
+#     """Add /static/css/custom.css to the admin."""
+#     return format_html(
+#         '<link rel="stylesheet" href="{}">',
+#         static("css/custom.css")
+#     )
+
+
+# @hooks.register("insert_global_admin_js", order=100)
+# def global_admin_js():
+#     """Add /static/css/custom.js to the admin."""
+#     return format_html(
+#         '<script src="{}"></script>',
+#         static("/js/custom.js")
+#     ) 
+class MapBlock(blocks.StructBlock):
+    marker_title = blocks.CharBlock(max_length=120,
+                                    default="Marker Title 'This will be updated after you save changes.'")
+    marker_description = blocks.RichTextBlock()
+    zoom_level = blocks.IntegerBlock(min_value=0, max_value=18, 
+    default='2', required=False)
+    location_x = blocks.FloatBlock(default='35.0', required=False)
+    location_y = blocks.FloatBlock(default='0.16', required=False)
+    marker_x = blocks.FloatBlock(default='51.5', required=False)
+    marker_y = blocks.FloatBlock(default='-0.09', required=False)
+
+    @property
+    def media(self):
+        return forms.Media(
+            js=[static("js/leaflet/leaflet.js")],
+            css={'all': [static("js/leaflet/leaflet.css")]}
+            # js=["https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"],
+            # css={'all': ["https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"]}
+        )
+
+    class Meta:
+        form_template = 'streams/admin_blocks/map.html'
+        template = 'streams/map.html'
+        icon = "site"

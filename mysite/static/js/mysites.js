@@ -10,6 +10,15 @@ $(function () {
     },
   });
 
+  $(".special.card .image").dimmer({
+    on: "hover",
+  });
+  $(".star.rating").rating();
+
+  $(".card .dimmer").dimmer({
+    on: "hover",
+  });
+
   // create sidebar and attach to menu open
   $(".ui.sidebar").sidebar("attach events", ".toc.item");
 

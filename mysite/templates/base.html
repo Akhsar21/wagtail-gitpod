@@ -1,4 +1,4 @@
-{% load static wagtailuserbar %}
+{% load static wagtailuserbar cache %}
 
 <!DOCTYPE html>
 <html class="no-js" lang="en">
@@ -17,10 +17,12 @@
     </title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
 
     {# Global stylesheets #}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.6/dist/semantic.min.css">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/mysite.css' %}">
+    <link rel="stylesheet" href="{% static 'fomantic/semantic.min.css' %}?v={{ VERSION }}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/mysite.css' %}?v={{ VERSION }}">
 
     {% block extra_css %}
     {# Override this in templates to add extra stylesheets #}
@@ -32,10 +34,7 @@
     <!-- Following Menu -->
     <div class="ui large top fixed hidden menu">
         <div class="ui container">
-            <a class="active item">Home</a>
-            <a class="item">Work</a>
-            <a class="item">Company</a>
-            <a class="item">Careers</a>
+            {% include "snippets/menu.html" %}
             <div class="right menu">
                 {% if request.user.is_authenticated %}
                 <div class="item">
@@ -55,10 +54,7 @@
 
     <!-- Sidebar Menu -->
     <div class="ui vertical inverted sidebar menu">
-        <a class="active item">Home</a>
-        <a class="item">Work</a>
-        <a class="item">Company</a>
-        <a class="item">Careers</a>
+        {% include "snippets/menu.html" %}
         {% if request.user.is_authenticated %}
         <a href="{% url 'account_logout' %}" class="item">Logout</a>
         {% else %}
@@ -66,7 +62,6 @@
         <a href="{% url 'account_signup' %}" class="item">Signup</a>
         {% endif %}
     </div>
-
 
     <!-- Page Contents -->
     <div class="pusher">
@@ -77,10 +72,7 @@
                     <a class="toc item">
                         <i class="sidebar icon"></i>
                     </a>
-                    <a class="active item">Home</a>
-                    <a class="item">Work</a>
-                    <a class="item">Company</a>
-                    <a class="item">Careers</a>
+                    {% include "snippets/menu.html" %}
                     <div class="right item">
                         {% if request.user.is_authenticated %}
                         <a href="{% url 'account_logout' %}" class="ui inverted button">Log out</a>
@@ -94,40 +86,15 @@
 
             {% block content %}{% endblock %}
 
-            <div class="ui inverted vertical footer segment">
-                <div class="ui container">
-                    <div class="ui stackable inverted divided equal height stackable grid">
-                        <div class="three wide column">
-                            <h4 class="ui inverted header">About</h4>
-                            <div class="ui inverted link list">
-                                <a href="#" class="item">Sitemap</a>
-                                <a href="#" class="item">Contact Us</a>
-                                <a href="#" class="item">Religious Ceremonies</a>
-                                <a href="#" class="item">Gazebo Plans</a>
-                            </div>
-                        </div>
-                        <div class="three wide column">
-                            <h4 class="ui inverted header">Services</h4>
-                            <div class="ui inverted link list">
-                                <a href="#" class="item">Banana Pre-Order</a>
-                                <a href="#" class="item">DNA FAQ</a>
-                                <a href="#" class="item">How To Access</a>
-                                <a href="#" class="item">Favorite X-Men</a>
-                            </div>
-                        </div>
-                        <div class="seven wide column">
-                            <h4 class="ui inverted header">Footer Header</h4>
-                            <p>Extra space for a call to action inside the footer that could help re-engage users.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% include "snippets/footer.html" %}
         </div>
 
         {# Global javascript #}
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        {% comment %} <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> {% endcomment %}
+        <script type="text/javascript" src="{% static 'js/jquery-3.5.1.min.js' %}?v={{ VERSION }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.6/dist/semantic.min.js"></script>
-        <script type="text/javascript" src="{% static 'js/mysite.js' %}"></script>
+        <script src="{% static 'fomantic/semantic.min.js' %}?v={{ VERSION }}"></script>
+        <script type="text/javascript" src="{% static 'js/mysites.js' %}?v={{ VERSION }}"></script>
 
         {% block extra_js %}
         {# Override this in templates to add extra javascript #}
