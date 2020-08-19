@@ -5,13 +5,13 @@
 {% block content %}
 <div class="ui text container" style="padding-top:100px;">
     <h1>{{ self.title }}</h1>
-    <small>
+    <p>
         {% if self.custom_title %}
         {{ self.custom_title }}
         {% else %}
-        {{ self.title }}
+        {{ self.subtitle }}
         {% endif %}
-    </small>
+    </p>
 </div>
 </div>
 
@@ -36,7 +36,7 @@
     <ul>
         {% for cat in self.categories.all %}
         <li>
-            <a href="{{ self.get_parent.url }}/?category={{ cat.slug }}">
+            <a href="{{ self.get_parent.url }}?category={{ cat.slug }}">
                 {{ cat }}
             </a>
         </li>

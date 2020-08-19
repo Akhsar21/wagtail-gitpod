@@ -1,4 +1,5 @@
 """Streamfields live in here"""
+from django.templatetags.static import static
 from django import forms
 from wagtail.core import blocks
 from wagtail.core.templatetags.wagtailcore_tags import richtext
@@ -35,7 +36,7 @@ class CardBlock(blocks.StructBlock):
 
     class Meta:
         template = "streams/cards_block.html"
-        icon = "placeholder"
+        icon = "grip"
         label = "Staff Cards"
 
 
@@ -76,7 +77,7 @@ class CTABlock(blocks.StructBlock):
 
     class Meta:
         template = "streams/cta_block.html"
-        icon = "placeholder"
+        icon = "link"
         label = "Call to Action"
 
 
@@ -141,47 +142,13 @@ class CaptionedImageBlock(blocks.StructBlock):
         template = 'streams/captioned_image.html'
         help_text = 'Select an image and add a caption (optional).'
 
-# heading = TextBlock(
-#         icon='title',
-#         template='wagtailcontentstream/blocks/heading.html',
-#     )
-#     paragraph = RichTextBlock(
-#         icon='pilcrow',
-#         features=['bold', 'italic', 'link', 'ol', 'ul', 'monospace'],
-#     )
-#     image = CaptionedImageBlock()
-#     document = DocumentChooserBlock()
-#     embed = EmbedBlock(icon='media')
-#     table = TableBlock(icon='table')
-#     code = CodeBlock(icon='code')
 
-from django.templatetags.static import static
-# from django.utils.html import format_html
-
-
-
-# @hooks.register("insert_global_admin_css", order=100)
-# def global_admin_css():
-#     """Add /static/css/custom.css to the admin."""
-#     return format_html(
-#         '<link rel="stylesheet" href="{}">',
-#         static("css/custom.css")
-#     )
-
-
-# @hooks.register("insert_global_admin_js", order=100)
-# def global_admin_js():
-#     """Add /static/css/custom.js to the admin."""
-#     return format_html(
-#         '<script src="{}"></script>',
-#         static("/js/custom.js")
-#     ) 
 class MapBlock(blocks.StructBlock):
     marker_title = blocks.CharBlock(max_length=120,
-                                    default="Marker Title 'This will be updated after you save changes.'")
+                                    help_text="Marker Title 'This will be updated after you save changes.'")
     marker_description = blocks.RichTextBlock()
-    zoom_level = blocks.IntegerBlock(min_value=0, max_value=18, 
-    default='2', required=False)
+    zoom_level = blocks.IntegerBlock(min_value=0, max_value=18,
+                                     default='2', required=False)
     location_x = blocks.FloatBlock(default='35.0', required=False)
     location_y = blocks.FloatBlock(default='0.16', required=False)
     marker_x = blocks.FloatBlock(default='51.5', required=False)
@@ -190,10 +157,10 @@ class MapBlock(blocks.StructBlock):
     @property
     def media(self):
         return forms.Media(
-            js=[static("js/leaflet/leaflet.js")],
-            css={'all': [static("js/leaflet/leaflet.css")]}
-            # js=["https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"],
-            # css={'all': ["https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"]}
+            # js=[static("js/leaflet/leaflet.js")],
+            # css={'all': [static("js/leaflet/leaflet.css")]}
+            js=["https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"],
+            css={'all': ["https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"]}
         )
 
     class Meta:

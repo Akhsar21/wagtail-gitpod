@@ -41,12 +41,12 @@ class HomePageCarouselImages(Orderable):
 class BannerCTASerializer(Field):
     def to_representation(self, value):
         return {
-            'id': page.id,
-            'title': page.title,
-            'first_published_at': page.first_published_at,
-            'owner': page.owner.username,
-            'slug': page.slug,
-            'url': page.url,
+            'id': value.id,
+            'title': value.title,
+            'first_published_at': value.first_published_at,
+            'owner': value.owner.username,
+            'slug': value.slug,
+            'url': value.url,
         }
 
 

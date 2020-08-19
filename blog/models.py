@@ -116,13 +116,15 @@ class BlogAuthor(models.Model):
 class BlogCategory(models.Model):
     """Blog category for snippets."""
 
-    name = models.CharField(max_length=255)
-    slug = models.SlugField(verbose_name="slug", allow_unicode=True, max_length=255,
+    name = models.CharField(max_length=50)
+    slug = models.SlugField(verbose_name="slug", allow_unicode=True,
                             help_text="A slug to identify posts by this category")
 
     panels = [
-        FieldPanel("name"),
-        FieldPanel("slug"),
+        MultiFieldPanel([
+            FieldPanel("name"),
+            FieldPanel("slug"),
+        ], heading="Categories"),
     ]
 
     def __str__(self):
@@ -163,7 +165,7 @@ class BlogListingPage(RoutablePageMixin, Page):
 
     ajax_template = "blog/blog_listing_page_ajax.html"
     max_count = 1
-    subpage_types = ["VideoBlogPage", "blog.ArticleBlogPage"]
+    subpage_types = ["VideoBlogPage", "ArticleBlogPage"]
 
     custom_title = models.CharField(max_length=100, blank=False, null=False,
                                     help_text="Overwrites the default title")
@@ -251,6 +253,16 @@ class BlogListingPage(RoutablePageMixin, Page):
         # Note: The below template (latest_posts.html) will need to be adjusted
         return render(request, "blog/latest_posts.html", context)
 
+    # @route(r'^search/$')
+    # def post_search(self, request, *args, **kwargs):
+    #     search_query = request.GET.get('q', None)
+    #     self.posts = self.get_posts()
+    #     if search_query:
+    #         self.posts = self.posts.filter(body__contains=search_query)
+    #         self.search_term = search_query
+    #         self.search_type = 'search'
+    #     return Page.serve(self, request, *args, **kwargs)
+
     @route(r'^latest/$', name="latest_posts")
     def latest_blog_posts_only_shows_last_5(self, request, *args, **kwargs):
         context = self.get_context(request, *args, **kwargs)
@@ -299,11 +311,11 @@ class BlogDetailPage(Page):
             icon='title',
             min_length=10,
             max_length=100,
-            template='wagtailcontentstream/blocks/heading.html'
+            template='streams/heading.html'
         )),
         ("document", DocumentChooserBlock()),
         ("embed", EmbedBlock(icon='media')),
-        ("table", TableBlock(icon='table')),
+        ("table", TableBlock(icon='table', template='streams/table.html')),
         ("code", CodeBlock(icon='code')),
         ("title_and_text", blocks.TitleAndTextBlock()),
         ("image", blocks.CaptionedImageBlock()),
@@ -322,9 +334,7 @@ class BlogDetailPage(Page):
         FieldPanel("tags"),
         ImageChooserPanel("banner_image"),
         InlinePanel("blog_authors", label="Author", max_num=1),
-        MultiFieldPanel([
-            FieldPanel("categories", widget=forms.CheckboxSelectMultiple),
-        ], heading="Categories"),
+        FieldPanel("categories", widget=forms.CheckboxSelectMultiple),
     ]
 
     api_fields = [
@@ -369,9 +379,7 @@ class ArticleBlogPage(BlogDetailPage):
         ImageChooserPanel("banner_image"),
         ImageChooserPanel('intro_image'),
         InlinePanel("blog_authors", label="Author", max_num=1),
-        MultiFieldPanel([
-            FieldPanel("categories", widget=forms.CheckboxSelectMultiple),
-        ], heading="Categories"),
+        FieldPanel("categories", widget=forms.CheckboxSelectMultiple),
     ]
 
     api_fields = [
@@ -404,9 +412,7 @@ class VideoBlogPage(BlogDetailPage):
         FieldPanel("tags"),
         ImageChooserPanel("banner_image"),
         InlinePanel("blog_authors", label="Author", max_num=1),
-        MultiFieldPanel([
-            FieldPanel("categories", widget=forms.CheckboxSelectMultiple),
-        ], heading="Categories"),
+        FieldPanel("categories", widget=forms.CheckboxSelectMultiple,),
     ]
 
     api_fields = [

@@ -1,54 +1,19 @@
 {% extends "base.html" %}
 
-{% load wagtailcore_tags wagtailimages_tags %}
-
 {% block content %}
 <div class="ui text container" style="padding-top:100px;">
+    {% if categories_term %}
+    Cat
+    {% else %}
     <h1>Latest Posts</h1>
+    {% endif %}
 </div>
 </div>
-<div class="ui container">
+<div class="ui container" style="padding:100px 0 100px 0;">
     <div class="ui three cards">
         {% for post in posts %}
         {% comment %} {% cache 604800 blog_post_preview post.id %} {% endcomment %}
-        <div class="ui card">
-            <div class="image">
-                <div class="ui blurring dimmable image dimmer">
-                    <div class="content">
-                        <div class="center">
-                            <a class="ui inverted button" href="{{ post.url }}">Read post...</a>
-                        </div>
-                    </div>
-                </div>
-                {% image post.banner_image fill-400x250 as blog_img %}
-                <img src="{{ blog_img.url }}" alt="{{ blog_img.alt }}">
-            </div>
-            <div class="content">
-                <a class="header" href="{% pageurl post %}">
-                    {{ post.custom_title }}
-                </a>
-                <div class="meta">
-                    <a class="group">Meta</a>
-                </div>
-                <div class="description">One or two sentence description that may go to several lines</div>
-            </div>
-            <div class="extra content">
-                {% for cat in post.categories.all %}
-                <a href="" class="right floated created">
-                    {{ cat }}
-                </a>{% if not forloop.last %}, {% endif %}
-                {% endfor %}
-                <a class="friends">
-                    <i class="user icon"></i>
-                    {% for item in post.blog_authors.all %}
-                    {{ item.author }}
-                    {% if item.author.website %}
-                    <a href="{{ item.author.website }}">(website)</a>
-                    {% endif %}
-                    {% endfor %}
-                </a>
-            </div>
-        </div>
+        {% include "snippets/blog_list.html" %}
         {% comment %} {% endcache %} {% endcomment %}
         {% endfor %}
     </div>

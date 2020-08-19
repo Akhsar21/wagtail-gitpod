@@ -10,13 +10,20 @@
 </div>
 </div>
 
-<div class="ui container">
-    <form class="ui form" action="{% pageurl page %}" method="POST">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <button class="ui button primary" type="submit">
-            Submit Form
-        </button>
-    </form>
+<div class="ui container" style="padding:100px 0 100px 0;">
+    <div class="ui two column stackable grid">
+        <div class="column">
+            <form class="ui form" action="{% pageurl page %}" method="POST">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button class="ui button primary" type="submit">
+                    Submit Form
+                </button>
+            </form>
+        </div>
+        <div class="column">
+            <div class="ui segment">\\</div>
+        </div>
+    </div>
 </div>
 {% endblock %}

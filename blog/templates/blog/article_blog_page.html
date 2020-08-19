@@ -7,7 +7,7 @@
     <h1>{{ self.title }}</h1>
 </div>
 </div>
-<div class="ui container">
+<div class="ui container" style="padding:100px 0 100px 0;">
     {% image self.banner_image fill-1200x300 as banner%}
     <img src="{{ banner.url }}" alt="{{ banner.alt }}">
     <br>
@@ -29,6 +29,7 @@
     {% if self.subtitle %}
     {{ self.subtitle }}
     {% endif %}
+    
     <ul>
         {% for item in self.blog_authors.all %}
         {% image item.author.image fill-100x100 as img %}
@@ -40,16 +41,10 @@
         {% endfor %}
     </ul>
 
-    <h2>Categories</h2>
-    <ul>
-        {% for cat in self.categories.all %}
-        <li>
-            <a href="{{ self.get_parent.url }}/?category={{ cat.slug }}">
-                {{ cat }}
-            </a>
-        </li>
-        {% endfor %}
-    </ul>
+    {% for cat in self.categories.all %}
+    <a href="{{ self.get_parent.url }}?category={{ cat.slug }}">{{ cat }}</a>
+    {% endfor %}
+
     {% if self.intro_image %}
     {% image self.intro_image fill-1400x400 as intro_img %}
     <img src="{{ intro_img.url }}" alt="{{ intro_img.alt }}">
